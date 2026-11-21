@@ -1,0 +1,4 @@
+/* Keep code, URLs and English identifiers left-to-right inside RTL pages */
+.md-typeset code, .md-typeset pre, .md-typeset .mermaid { direction: ltr; text-align: left; }
+.md-typeset table:not([class]) { direction: rtl; }
+.md-typeset .ltr { direction: ltr; text-align: left; }

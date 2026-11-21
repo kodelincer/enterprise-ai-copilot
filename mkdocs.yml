@@ -1,0 +1,75 @@
+site_name: دستیار هوشمند سازمانی (Enterprise AI Copilot)
+site_description: مستند فنی و مخزن دانش پروژه دستیار هوشمند سازمانی برای دفتر معاونت
+repo_url: https://github.com/kodelincer/enterprise-ai-copilot
+repo_name: kodelincer/enterprise-ai-copilot
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: fa
+  direction: rtl
+  font:
+    text: Vazirmatn
+    code: Roboto Mono
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: حالت تیره
+    - scheme: slate
+      primary: indigo
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: حالت روشن
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+
+extra_css:
+  - stylesheets/rtl.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - def_list
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+nav:
+  - خانه: index.md
+  - چشم‌انداز: vision.md
+  - نیازمندی‌ها:
+      - نیازمندی‌های اصلی: requirements/core.md
+      - دستیار زنده جلسه: requirements/live-copilot.md
+      - فازبندی و سطح اختیار: requirements/phasing.md
+  - معماری:
+      - نمای کلی: architecture/overview.md
+      - لایه‌های حافظه و دانش: architecture/memory.md
+      - گراف دانش سازمانی: architecture/knowledge-graph.md
+      - اتصال به سامانه‌ها (API، Browser-use، MCP): architecture/integration.md
+      - مؤلفه‌ها و فناوری‌های پیشنهادی: architecture/stack.md
+  - زیرساخت و سخت‌افزار: hardware.md
+  - تحقیقات:
+      - محصولات و پروژه‌های مشابه: research/landscape.md
+      - "متن خام تحقیق ۱۴۰۵/۰۸/۳۰": research/raw/2026-11-21-initial-research.md
+  - سؤالات باز: open-questions.md
+  - تاریخچه تغییرات: changelog.md
