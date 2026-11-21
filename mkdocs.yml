@@ -61,6 +61,7 @@ nav:
       - نیازمندی‌های اصلی: requirements/core.md
       - دستیار زنده جلسه: requirements/live-copilot.md
       - پیوست‌ها و انواع فایل: requirements/attachments.md
+      - دانش حقوقی و مقرراتی: requirements/regulatory-knowledge.md
       - فازبندی و سطح اختیار: requirements/phasing.md
   - معماری:
       - نمای کلی: architecture/overview.md
@@ -74,5 +75,6 @@ nav:
       - محصولات و پروژه‌های مشابه: research/landscape.md
       - "متن خام تحقیق ۱۴۰۵/۰۸/۳۰": research/raw/2026-11-21-initial-research.md
       - "متن خام: پیوست‌ها، فازها، نگهداری داده": research/raw/2026-11-21-attachments-phases-residency.md
+      - "متن خام: قوانین و مصوبات شهرداری": research/raw/2026-11-21-municipal-regulations.md
   - سؤالات باز: open-questions.md
   - تاریخچه تغییرات: changelog.md
