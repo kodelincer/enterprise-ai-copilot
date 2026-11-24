@@ -2,6 +2,9 @@
 
 ## ۱۴۰۵/۰۹/۰۳ (2026-11-24)
 
+- بخش جدید [یادگیری](learn/index.md): واژه‌نامه مفاهیم و صفحه آموزشی [BM25](learn/bm25.md) با مثال عددی فارسی، مقایسه BM25 و جست‌وجوی برداری، مثال جست‌وجوی ترکیبی «VM-023» و مثال عددی RRF.
+- اصلاح: رتبه‌بندی داخلی PostgreSQL (`ts_rank`) دقیقاً BM25 نیست؛ BM25 واقعی با افزونه (مثل pg_search).
+
 - صفحه جدید [دانش ترکیبی: LLM Wiki + RAG + حافظه](architecture/llm-wiki.md): ایده LLM Wiki کارپاتی، تفاوت با RAG، تفکیک مسئولیت‌ها (Obsidian، Markdown، Hermes، LLM، QMD، Honcho، مخزن اسناد اصلی)، مسیریابی پرسش، ساختار ویکی، تعارض‌ها و راه‌حل‌ها.
 - صفحه جدید [معماری کامل دانش (شش لایه)](architecture/knowledge-architecture.md) با نمودار و نگاشت هر لایه به ابزارها؛ بررسی شواهد، هشدار تناقض و ردپای ممیزی.
 - جدول [گزینه‌های فناوری به تفکیک لایه](architecture/stack.md#candidates) با انتخاب فاز ۱ و ارزیابی فارسی و استقرار داخلی (MinIO، PostgreSQL، Docling، BGE-M3، pgvector، QMD، Ragas، Haystack، GraphRAG).

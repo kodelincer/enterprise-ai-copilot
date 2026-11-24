@@ -73,6 +73,9 @@ nav:
       - اتصال به سامانه‌ها (API، Browser-use، MCP): architecture/integration.md
       - مؤلفه‌ها و فناوری‌های پیشنهادی: architecture/stack.md
   - زیرساخت و سخت‌افزار: hardware.md
+  - یادگیری:
+      - واژه‌نامه مفاهیم: learn/index.md
+      - "BM25: رتبه‌بندی جست‌وجوی متنی": learn/bm25.md
   - تحقیقات:
       - محصولات و پروژه‌های مشابه: research/landscape.md
       - "متن خام تحقیق ۱۴۰۵/۰۸/۳۰": research/raw/2026-11-21-initial-research.md
@@ -80,5 +83,6 @@ nav:
       - "متن خام: قوانین و مصوبات شهرداری": research/raw/2026-11-21-municipal-regulations.md
       - "متن خام: LLM Wiki": research/raw/2026-11-24-llm-wiki-architecture.md
       - "متن خام: گزینه‌های فناوری": research/raw/2026-11-24-technology-choices.md
+      - "متن خام: BM25": research/raw/2026-11-24-bm25.md
   - سؤالات باز: open-questions.md
   - تاریخچه تغییرات: changelog.md
