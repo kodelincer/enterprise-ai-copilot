@@ -11,6 +11,10 @@
 | سرویس‌دهی مدل | vLLM (Endpoint سازگار با OpenAI) | Ollama، llama.cpp، SGLang | Hermes و Honcho هر دو با Endpoint سازگار با OpenAI کار می‌کنند |
 | گفتار به متن فارسی | Whisper فاین‌تیون فارسی (مثل Nava یا BuzzASR) + faster-whisper | سرویس‌های STT داخلی ایران | نیاز به لایه Streaming/VAD؛ ارزیابی روی صدای واقعی جلسات |
 | تشخیص گوینده | pyannote.audio | NeMo diarization | ثبت صدای مرجع اعضای ثابت جلسات برای شناسایی نام |
+| مخزن اسناد اصلی | Object storage داخلی (مثل MinIO) + فهرست و Hash در PostgreSQL | سیستم فایل با نسخه‌بندی | منبع حقیقت تغییرناپذیر |
+| دانش ترکیبی (LLM Wiki) | Markdown در مخزن git داخلی (مثل Gitea) | — | ingest، query و lint توسط Hermes. [جزئیات](llm-wiki.md) |
+| جست‌وجوی ویکی | QMD (BM25 + برداری + بازرتبه‌بندی، محلی، MCP، مجوز MIT) | جست‌وجوی ترکیبی PostgreSQL | Embedding چندزبانه برای فارسی |
+| محیط مشاهده دانش | Obsidian (بدون Sync ابری) | هر ویرایشگر Markdown | فقط برای مدیران دانش |
 | حافظه مکالمات | Honcho (Self-host) | Mem0، Zep | مجوز AGPL؛ فعال‌سازی احراز هویت |
 | پایگاه داده اصلی | PostgreSQL + pgvector | — | رویدادها، تصمیم‌ها، گراف دانش، بردارها |
 | گراف دانش | جداول رابطه‌ای در PostgreSQL | Neo4j (اختیاری) | |

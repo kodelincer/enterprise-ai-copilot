@@ -66,6 +66,7 @@ nav:
   - معماری:
       - نمای کلی: architecture/overview.md
       - لایه‌های حافظه و دانش: architecture/memory.md
+      - "دانش ترکیبی: LLM Wiki + RAG + حافظه": architecture/llm-wiki.md
       - گراف دانش سازمانی: architecture/knowledge-graph.md
       - نگهداری داده در سازمان: architecture/data-residency.md
       - اتصال به سامانه‌ها (API، Browser-use، MCP): architecture/integration.md
@@ -76,5 +77,6 @@ nav:
       - "متن خام تحقیق ۱۴۰۵/۰۸/۳۰": research/raw/2026-11-21-initial-research.md
       - "متن خام: پیوست‌ها، فازها، نگهداری داده": research/raw/2026-11-21-attachments-phases-residency.md
       - "متن خام: قوانین و مصوبات شهرداری": research/raw/2026-11-21-municipal-regulations.md
+      - "متن خام: LLM Wiki": research/raw/2026-11-24-llm-wiki-architecture.md
   - سؤالات باز: open-questions.md
   - تاریخچه تغییرات: changelog.md
