@@ -55,6 +55,8 @@
 
 ### درباره QMD
 
+آموزش کامل و قدم‌به‌قدم: [QMD: مبانی و ایده کامل](../learn/qmd.md).
+
 - موتور جست‌وجوی محلی از Tobi Lütke، مجوز **MIT** ([مخزن](https://github.com/tobi/qmd)).
 - ترکیب جست‌وجوی متنی BM25 (SQLite FTS5)، جست‌وجوی برداری و بازرتبه‌بندی با مدل‌های GGUF محلی (node-llama-cpp)، با گسترش پرسش و ادغام نتایج (RRF).
 - سرور **MCP** دارد (ابزارهای `query`، `get`، `multi_get`، `status`) و Hermes یک [مهارت QMD](https://hermes-agent.nousresearch.com/docs/user-guide/skills/optional/research/research-qmd) دارد.
