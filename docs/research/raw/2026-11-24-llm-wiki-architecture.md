@@ -27,3 +27,57 @@
 > | LLM Wiki | Maintain interconnected, evolving knowledge synthesized from documents |
 >
 > For your metro AI assistant, I would actually combine all three.
+
+## پیام دوم: معماری کامل
+
+> The complete architecture idea
+> Enterprise knowledge architecture
+> 1. Original documents
+>
+> PDF · Word · Excel · Email · Audio · Video · Database records
+> Immutable source of truth
+>
+> Ingestion pipeline
+>
+> 2. Document processing
+> Text extraction
+>
+> OCR
+>
+> Chunking
+>
+> Metadata
+>
+> Entity extraction
+>
+> Relationship extraction
+>
+> 3A. Original knowledge index
+>
+> Chunks, embeddings, full-text index, metadata
+>
+> 3B. LLM Wiki
+>
+> Markdown pages, entities, concepts, synthesis, links
+>
+> 4. Retrieval and knowledge services
+> BM25 search
+>
+> Vector search
+>
+> Graph traversal
+>
+> Reranking
+>
+> 5. Agent and reasoning layer
+> Hermes / agent
+>
+> Honcho / memory
+>
+> Planning
+>
+> Evidence checking
+>
+> 6. Answer and validation
+>
+> Evidence-backed answers · Citations · Contradiction warnings · Audit trail

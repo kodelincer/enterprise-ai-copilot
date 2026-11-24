@@ -65,6 +65,7 @@ nav:
       - فازبندی و سطح اختیار: requirements/phasing.md
   - معماری:
       - نمای کلی: architecture/overview.md
+      - معماری کامل دانش (شش لایه): architecture/knowledge-architecture.md
       - لایه‌های حافظه و دانش: architecture/memory.md
       - "دانش ترکیبی: LLM Wiki + RAG + حافظه": architecture/llm-wiki.md
       - گراف دانش سازمانی: architecture/knowledge-graph.md

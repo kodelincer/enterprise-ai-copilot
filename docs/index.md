@@ -21,6 +21,7 @@
 | [پیوست‌ها](requirements/attachments.md) | Word، Excel، PDF، اسکن فارسی، RAR، AutoCAD |
 | [دانش حقوقی](requirements/regulatory-knowledge.md) | اساسنامه‌ها، قوانین، مصوبات و بخشنامه‌های شورای شهر |
 | [نگهداری داده](architecture/data-residency.md) | همه‌چیز داخل سازمان جز استدلال LLM |
+| [معماری کامل دانش](architecture/knowledge-architecture.md) | شش لایه از سند اصلی تا پاسخ مستند |
 | [معماری](architecture/overview.md) | لایه‌ها، حافظه، گراف دانش، اتصال به سامانه‌ها |
 | [زیرساخت و سخت‌افزار](hardware.md) | سرور دیتاسنتر، GPU، میکروفون، نمایشگر |
 | [محصولات مشابه](research/landscape.md) | بررسی بازار و پروژه‌های متن‌باز |
