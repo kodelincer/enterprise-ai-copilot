@@ -4,6 +4,7 @@
 
 - صفحه جدید [دانش ترکیبی: LLM Wiki + RAG + حافظه](architecture/llm-wiki.md): ایده LLM Wiki کارپاتی، تفاوت با RAG، تفکیک مسئولیت‌ها (Obsidian، Markdown، Hermes، LLM، QMD، Honcho، مخزن اسناد اصلی)، مسیریابی پرسش، ساختار ویکی، تعارض‌ها و راه‌حل‌ها.
 - صفحه جدید [معماری کامل دانش (شش لایه)](architecture/knowledge-architecture.md) با نمودار و نگاشت هر لایه به ابزارها؛ بررسی شواهد، هشدار تناقض و ردپای ممیزی.
+- جدول [گزینه‌های فناوری به تفکیک لایه](architecture/stack.md#candidates) با انتخاب فاز ۱ و ارزیابی فارسی و استقرار داخلی (MinIO، PostgreSQL، Docling، BGE-M3، pgvector، QMD، Ragas، Haystack، GraphRAG).
 - لایه پنجم حافظه (دانش ترکیبی)؛ افزودن مخزن اسناد اصلی، LLM Wiki، QMD و Obsidian به فهرست فناوری‌ها؛ افزودن به صفحه محصولات مشابه؛ سؤالات باز جدید.
 
 ## ۱۴۰۵/۰۸/۳۰ (2026-11-21) — به‌روزرسانی سوم
