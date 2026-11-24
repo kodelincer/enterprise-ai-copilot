@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>دستیار هوشمند سازمانی — موشن‌گرافیک</title>
+<style>
+@font-face{font-family:Vazirmatn;src:url(fonts/Vazirmatn.woff2) format("woff2");font-weight:100 900}
+:root{--bg:#070d1a;--panel:#0f1a2e;--panel2:#13223b;--line:#1f3354;--txt:#e8eef8;--mut:#8ea3c4;--cy:#22d3ee;--cy2:#0ea5e9;--am:#f5b041;--gr:#34d399;--rd:#f87171;--vi:#a78bfa}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg)}
+body{font-family:Vazirmatn,sans-serif;color:var(--txt)}
+#stage{position:relative;width:1920px;height:1080px;overflow:hidden;background:radial-gradient(1200px 700px at 50% 40%,#0f2040 0%,#070d1a 70%)}
+#grid{position:absolute;inset:0;background-image:radial-gradient(rgba(120,170,255,.13) 1.2px,transparent 1.2px);background-size:40px 40px;mask-image:radial-gradient(900px 600px at 50% 50%,#000 30%,transparent 100%)}
+#fx{position:absolute;inset:0}
+.scene{position:absolute;inset:0;display:none;transform-origin:50% 50%}
+.abs{position:absolute}
+.ltr{direction:ltr;unicode-bidi:isolate}
+.h{position:absolute;top:70px;left:0;right:0;text-align:center}
+.h .k{font-size:24px;color:var(--cy);font-weight:600;letter-spacing:1px;margin-bottom:6px}
+.h .t{font-size:58px;font-weight:800}
+.ic{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-0.15em}
+.card{background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:22px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.chip{display:inline-flex;align-items:center;gap:10px;padding:10px 22px;border-radius:999px;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.35);font-size:30px;font-weight:600;color:#d8f6fd}
+.src{display:inline-block;font-size:20px;font-weight:700;padding:3px 12px;border-radius:8px;background:rgba(245,176,65,.14);color:var(--am);border:1px solid rgba(245,176,65,.45);white-space:nowrap}
+mark{background:rgba(245,176,65,calc(var(--h)*.28));color:inherit;border-radius:8px;box-shadow:0 0 0 calc(var(--h)*3px) rgba(245,176,65,calc(var(--h)*.5));padding:0 4px}
+
+/* orb */
+.orb{position:absolute;border-radius:50%}
+.orb .core{position:absolute;inset:18%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#bff6ff 0%,#22d3ee 25%,#0b6fb0 60%,#0a2a55 100%);box-shadow:0 0 60px rgba(34,211,238,.55),0 0 140px rgba(34,211,238,.25)}
+.orb .ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(34,211,238,.0);background:conic-gradient(from 0deg,transparent 0 60%,rgba(34,211,238,.9) 75%,transparent 90%);-webkit-mask:radial-gradient(circle,transparent 63%,#000 64%,#000 67%,transparent 68%);mask:radial-gradient(circle,transparent 63%,#000 64%,#000 67%,transparent 68%)}
+.orb .ring2{position:absolute;inset:-14%;border-radius:50%;background:conic-gradient(from 180deg,transparent 0 70%,rgba(167,139,250,.8) 85%,transparent 95%);-webkit-mask:radial-gradient(circle,transparent 66%,#000 67%,#000 68.5%,transparent 69.5%);mask:radial-gradient(circle,transparent 66%,#000 67%,#000 68.5%,transparent 69.5%)}
+
+#brand{position:absolute;top:34px;right:48px;display:flex;align-items:center;gap:14px;font-size:24px;font-weight:700;color:#cfe3ff;opacity:0}
+#brand .dot{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#bff6ff,#22d3ee 40%,#0b6fb0);box-shadow:0 0 16px rgba(34,211,238,.8)}
+#prog{position:absolute;bottom:0;right:0;height:5px;background:linear-gradient(270deg,var(--cy),var(--vi))}
+#tag{position:absolute;top:38px;left:48px;font-size:20px;color:var(--mut);opacity:0}
+
+/* S2 */
+.sys{position:absolute;width:320px;height:104px;display:flex;align-items:center;gap:18px;padding:0 24px;font-size:28px;font-weight:700;white-space:nowrap}
+.sys .ic{font-size:44px;color:var(--cy)}
+.pain{display:inline-flex;align-items:center;gap:12px;font-size:29px;font-weight:600;padding:14px 26px;border-radius:16px;background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.35);color:#ffd9d9}
+
+/* S4 transcript */
+.tline{position:absolute;right:0;left:0;display:flex;gap:22px;align-items:flex-start}
+.av{flex:none;width:74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:#06101f}
+.tmeta{font-size:23px;color:var(--mut);margin-bottom:6px}
+.tmeta b{font-weight:800;margin-left:12px}
+.ttext{font-size:36px;line-height:1.7;font-weight:500}
+
+/* S5 */
+.node{position:absolute;width:360px;height:96px;display:flex;align-items:center;gap:18px;padding:0 26px;font-size:30px;font-weight:800}
+.node .ic{font-size:46px;color:var(--cy)}
+.res{position:absolute;width:420px;padding:16px 22px;font-size:26px;font-weight:600;line-height:1.6;border-radius:16px;background:rgba(245,176,65,.08);border:1px solid rgba(245,176,65,.5)}
+
+/* S6 tv */
+.tv{position:absolute;left:330px;top:205px;width:1260px;height:690px;border-radius:26px;background:#05080f;border:14px solid #1a2233;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 2px #2a3550}
+.ui{position:absolute;inset:0;padding:30px 40px;background:linear-gradient(180deg,#0b1526,#081020)}
+.uirow{display:flex;align-items:center;justify-content:space-between;font-size:27px;padding:11px 0;border-bottom:1px dashed #1f3354}
+.sug{margin-top:16px;padding:16px 24px;border-radius:16px;border:2px solid rgba(34,211,238,.6);background:rgba(34,211,238,.06);font-size:28px;line-height:1.75;min-height:150px}
+.mode{display:inline-flex;align-items:center;gap:10px;font-size:26px;font-weight:700;padding:10px 22px;border-radius:14px;border:1px solid var(--line);background:var(--panel);color:var(--mut)}
+.mode.on{color:#06101f;background:var(--cy);border-color:var(--cy)}
+
+/* S7 */
+.cell{position:absolute;height:120px;display:flex;align-items:center;gap:16px;padding:0 26px;font-size:29px;font-weight:700}
+.cell small{display:block;font-size:21px;font-weight:500;color:var(--mut)}
+.colh{position:absolute;top:255px;font-size:26px;color:var(--mut);font-weight:700;text-align:center}
+.arrow{position:absolute;height:4px;background:linear-gradient(270deg,var(--cy),transparent);transform-origin:100% 50%}
+.arrow:after{content:"";position:absolute;left:-6px;top:-8px;border:10px solid transparent;border-right:14px solid var(--cy);transform:rotate(180deg) translateX(10px)}
+.st{display:inline-flex;align-items:center;gap:10px;font-size:25px;padding:6px 16px;border-radius:999px}
+
+/* S8 */
+.half{position:absolute;top:230px;width:840px;height:720px;border-radius:30px;overflow:hidden;border:1px solid var(--line)}
+.bul{font-size:29px;line-height:1.9;font-weight:600;display:flex;align-items:center;gap:14px}
+.bul .ic{color:var(--gr);font-size:30px;flex:none}
+.letter{position:absolute;width:230px;height:150px;border-radius:12px;background:#f3f6fb;color:#1a2233;padding:16px 18px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.letter i{display:block;height:9px;border-radius:5px;background:#c9d3e4;margin:9px 0}
+
+/* S9 */
+.pr{position:absolute;top:260px;width:390px;height:500px;padding:36px 30px;text-align:center}
+.pr .ic{font-size:96px;color:var(--cy);margin-bottom:22px}
+.pr h3{font-size:34px;white-space:nowrap;font-weight:800;margin-bottom:18px}
+.pr p{font-size:27px;line-height:1.75;color:#c7d5ea;font-weight:500}
+
+/* S10 */
+.layer{position:absolute;right:120px;width:1450px;height:104px;display:flex;align-items:center;gap:26px;padding:0 30px}
+.layer .ln{flex:none;width:300px;font-size:30px;font-weight:800;display:flex;align-items:center;gap:14px}
+.layer .ln .ic{font-size:40px}
+.layer .cs{display:flex;gap:12px;flex-wrap:wrap}
+.layer .c{font-size:24px;font-weight:600;padding:8px 16px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);white-space:nowrap}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+<symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-2.5z"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M9 13h8M9 17h5"/></symbol>
+<symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14a5 5 0 0 1 6 5"/></symbol>
+<symbol id="i-coins" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></symbol>
+<symbol id="i-gantt" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 7h7M10 12h8M13 17h5"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="M19 16l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14A8 8 0 1 1 10 4a6 6 0 0 0 10 10z"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="i-news" viewBox="0 0 24 24"><rect x="3" y="4" width="15" height="16" rx="1"/><path d="M18 8h3v10a2 2 0 0 1-4 0"/><path d="M7 8h7M7 12h7M7 16h4"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol>
+<symbol id="i-learn" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></symbol>
+<symbol id="i-server" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01"/></symbol>
+<symbol id="i-tv" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="13" rx="1.5"/><path d="M8 21h8M12 17v4"/></symbol>
+<symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 2v5M15 2v5M6 7h12v4a6 6 0 0 1-12 0z"/><path d="M12 17v5"/></symbol>
+<symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></symbol>
+</defs>
+</svg>
+
+<div id="stage">
+<div id="grid"></div>
+<canvas id="fx" width="1920" height="1080"></canvas>
+
+<!-- S1 TITLE -->
+<div class="scene" id="s1" data-s="0" data-e="7">
+  <div class="orb" id="orb1" style="left:830px;top:200px;width:260px;height:260px" data-in="0.2" data-anim="scale" data-dur="1.2"><div class="ring2"></div><div class="ring"></div><div class="core"></div></div>
+  <div class="abs" style="top:520px;left:0;right:0;text-align:center;font-size:104px;font-weight:900" data-in="0.9" data-anim="up" data-dur="0.9">دستیار هوشمند سازمانی</div>
+  <div class="abs ltr" style="top:680px;left:0;right:0;text-align:center;font-size:38px;letter-spacing:10px;color:var(--cy);font-weight:500" data-in="1.5" data-anim="fade">ENTERPRISE AI COPILOT</div>
+  <div class="abs" style="top:800px;left:0;right:0;display:flex;justify-content:center;gap:22px">
+    <span class="chip" data-in="2.4" data-anim="pop">شنیدن</span>
+    <span class="chip" data-in="2.75" data-anim="pop">فهمیدن</span>
+    <span class="chip" data-in="3.1" data-anim="pop">جست‌وجو</span>
+    <span class="chip" data-in="3.45" data-anim="pop">تحلیل</span>
+    <span class="chip" data-in="3.8" data-anim="pop" style="background:rgba(245,176,65,.12);border-color:rgba(245,176,65,.55);color:#ffe6bd">پیشنهاد</span>
+  </div>
+</div>
+
+<!-- S2 PROBLEM -->
+<div class="scene" id="s2" data-s="7" data-e="16">
+  <div class="h" data-in="0.2" data-anim="up"><div class="k">مسئله</div><div class="t">دانش سازمان در سامانه‌های جدا از هم پخش است</div></div>
+  <svg class="abs" id="s2lines" style="left:0;top:0" width="1920" height="1080"></svg>
+  <div class="abs" id="s2center" style="left:860px;top:450px;width:200px;height:200px;border-radius:50%;border:2px dashed rgba(142,163,196,.5);display:flex;align-items:center;justify-content:center;flex-direction:column;font-size:28px;font-weight:700;color:var(--mut)" data-in="0.6" data-anim="scale"><svg class="ic" style="font-size:56px;margin-bottom:6px"><use href="#i-people"/></svg>معاونت</div>
+  <div class="sys card" data-in="1.0" data-anim="pop" data-float="1" style="left:1280px;top:250px"><svg class="ic"><use href="#i-wrench"/></svg>نگهداری و تعمیرات</div>
+  <div class="sys card" data-in="1.2" data-anim="pop" data-float="2" style="left:320px;top:250px"><svg class="ic"><use href="#i-mail"/></svg>دبیرخانه و نامه‌ها</div>
+  <div class="sys card" data-in="1.4" data-anim="pop" data-float="3" style="left:1440px;top:480px"><svg class="ic"><use href="#i-doc"/></svg>قراردادها</div>
+  <div class="sys card" data-in="1.6" data-anim="pop" data-float="4" style="left:160px;top:480px"><svg class="ic"><use href="#i-people"/></svg>منابع انسانی</div>
+  <div class="sys card" data-in="1.8" data-anim="pop" data-float="5" style="left:1280px;top:710px"><svg class="ic"><use href="#i-coins"/></svg>مالی</div>
+  <div class="sys card" data-in="2.0" data-anim="pop" data-float="6" style="left:320px;top:710px"><svg class="ic"><use href="#i-gantt"/></svg>پروژه‌ها</div>
+  <div class="sys card" data-in="2.2" data-anim="pop" data-float="7" style="left:800px;top:735px"><svg class="ic"><use href="#i-box"/></svg>انبار</div>
+  <div class="sys card" data-in="2.4" data-anim="pop" data-float="8" style="left:800px;top:240px"><svg class="ic"><use href="#i-cal"/></svg>جلسات و تقویم</div>
+  <div class="abs" style="top:930px;left:0;right:0;display:flex;justify-content:center;gap:24px">
+    <span class="pain" data-in="4.0" data-anim="up">تصمیم‌های جلسه گم می‌شوند</span>
+    <span class="pain" data-in="4.6" data-anim="up">نامه‌ها و پیوست‌ها انبوه‌اند</span>
+    <span class="pain" data-in="5.2" data-anim="up">داده زنده در سامانه‌های جداست</span>
+  </div>
+</div>
+
+<!-- S3 OFFICE -->
+<div class="scene" id="s3" data-s="16" data-e="26">
+  <div class="h" data-in="0.2" data-anim="up"><div class="k">۱ · محل استقرار</div><div class="t">دفتر معاونت: میکروفون + نمایشگر بزرگ</div></div>
+  <svg class="abs" style="left:0;top:0" width="1920" height="1080" id="office">
+    <defs>
+      <linearGradient id="tbl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b3f63"/><stop offset="1" stop-color="#16243d"/></linearGradient>
+      <linearGradient id="scr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d2140"/><stop offset="1" stop-color="#081326"/></linearGradient>
+    </defs>
+    <g data-in="0.5" data-anim="fade">
+      <rect x="380" y="230" width="1160" height="590" rx="28" fill="rgba(255,255,255,.025)" stroke="#1f3354"/>
+    </g>
+    <g data-in="0.8" data-anim="up">
+      <rect x="715" y="245" width="490" height="285" rx="14" fill="#1a2233"/>
+      <rect x="727" y="257" width="466" height="261" rx="6" fill="url(#scr)"/>
+      <rect x="750" y="282" width="200" height="16" rx="8" fill="#22d3ee" opacity=".8"/>
+      <rect x="750" y="316" width="420" height="10" rx="5" fill="#3a5784"/>
+      <rect x="750" y="338" width="380" height="10" rx="5" fill="#3a5784"/>
+      <rect x="750" y="372" width="420" height="80" rx="10" fill="none" stroke="#22d3ee" stroke-width="2"/>
+      <rect x="770" y="392" width="300" height="10" rx="5" fill="#f5b041" opacity=".8"/>
+      <rect x="770" y="414" width="360" height="10" rx="5" fill="#3a5784"/>
+      <rect x="750" y="470" width="120" height="22" rx="11" fill="#1f3354"/>
+      <circle cx="1165" cy="290" r="8" fill="#f87171" id="recdot"/>
+      <rect x="935" y="530" width="50" height="22" fill="#1a2233"/>
+    </g>
+    <g data-in="1.0" data-anim="fade">
+      <rect x="1255" y="505" width="90" height="38" rx="6" fill="#22304a" stroke="#3a5784"/>
+      <circle cx="1275" cy="524" r="4" fill="#34d399"/>
+    </g>
+    <g id="people" data-in="1.1" data-anim="up"></g>
+    <g data-in="1.0" data-anim="up">
+      <polygon points="470,715 1450,715 1560,815 360,815" fill="url(#tbl)" stroke="#3a5784"/>
+    </g>
+    <g id="rings"></g>
+    <g data-in="1.6" data-anim="scale">
+      <ellipse cx="960" cy="742" rx="54" ry="13" fill="#0e1a2e" stroke="#22d3ee" stroke-width="3"/>
+      <ellipse cx="960" cy="738" rx="30" ry="6" fill="#22d3ee" opacity=".5"/>
+    </g>
+    <!-- leaders -->
+    <path d="M1015 742 L1550 742" stroke="#22d3ee" stroke-width="2" fill="none" pathLength="1" data-draw="1" data-in="2.6" data-dur="0.6"/>
+    <path d="M715 330 L560 330" stroke="#22d3ee" stroke-width="2" fill="none" pathLength="1" data-draw="1" data-in="3.6" data-dur="0.5"/>
+    <path d="M1345 524 L1550 524" stroke="#22d3ee" stroke-width="2" fill="none" pathLength="1" data-draw="1" data-in="4.6" data-dur="0.5"/>
+  </svg>
+  <div class="abs" style="left:1565px;top:700px;width:310px;text-align:left;font-size:27px;font-weight:700;line-height:1.5" data-in="2.9" data-anim="right"><span style="color:var(--cy)">آرایه میکروفون</span><br><span style="font-size:22px;color:var(--mut);font-weight:500">رومیزی یا سقفی، حذف نویز و اکو، پوشش کل میز</span></div>
+  <div class="abs" style="left:150px;top:290px;width:400px;font-size:27px;font-weight:700;line-height:1.5;text-align:left" data-in="3.9" data-anim="left"><span style="color:var(--cy)">نمایشگر ۶۵ تا ۷۵ اینچ</span><br><span style="font-size:22px;color:var(--mut);font-weight:500">متن زنده و پیشنهادهای دستیار</span></div>
+  <div class="abs" style="left:1565px;top:480px;width:310px;text-align:left;font-size:27px;font-weight:700;line-height:1.5" data-in="4.9" data-anim="right"><span style="color:var(--cy)">Mini PC دفتر</span><br><span style="font-size:22px;color:var(--mut);font-weight:500">ضبط و ارسال امن صدا</span></div>
+  <div class="abs" style="left:150px;top:470px;width:400px;font-size:22px;color:#ffcaca;text-align:left;font-weight:600" data-in="5.4" data-anim="fade">● نشانگر «در حال ضبط» برای اطلاع حاضران</div>
+  <!-- secure link strip -->
+  <div class="abs card" style="right:250px;top:880px;width:400px;height:110px;display:flex;align-items:center;gap:16px;padding:0 26px;font-size:28px;font-weight:800" data-in="6.0" data-anim="up"><svg class="ic" style="font-size:44px;color:var(--cy)"><use href="#i-mic"/></svg>دفتر معاونت</div>
+  <div class="abs card" style="left:250px;top:880px;width:440px;height:110px;display:flex;align-items:center;gap:16px;padding:0 26px;font-size:28px;font-weight:800;border-color:rgba(52,211,153,.5)" data-in="6.4" data-anim="up"><svg class="ic" style="font-size:44px;color:var(--gr)"><use href="#i-server"/></svg>دیتاسنتر سازمان</div>
+  <svg class="abs" style="left:690px;top:925px" width="580" height="20" id="link3"><line x1="0" y1="10" x2="580" y2="10" stroke="#34d399" stroke-width="3" stroke-dasharray="10 10" pathLength="1" data-draw="1" data-in="6.8" data-dur="0.6" style="stroke-dasharray:none"/></svg>
+  <div class="abs" style="left:690px;width:580px;top:955px;text-align:center;font-size:24px;color:#bff3dc;font-weight:700" data-in="7.3" data-anim="fade"><svg class="ic" style="color:var(--gr)"><use href="#i-lock"/></svg> شبکه داخلی — صدا و داده داخل سازمان می‌ماند</div>
+</div>
+
+<!-- S4 TRANSCRIPT -->
+<div class="scene" id="s4" data-s="26" data-e="40">
+  <div class="h" data-in="0.2" data-anim="up"><div class="k">۲ · گوش دادن</div><div class="t">متن زنده فارسی با تشخیص گوینده</div></div>
+  <div class="abs card" style="right:110px;top:225px;width:1250px;height:640px;padding:40px 44px" data-in="0.5" data-anim="up">
+    <div style="display:flex;justify-content:space-between;align-items:center;font-size:24px;color:var(--mut);margin-bottom:26px"><span style="font-weight:700;color:#ffcaca">● در حال ضبط</span><span class="ltr">00:12:04</span></div>
+    <div style="position:relative;height:520px">
+      <div class="tline" style="top:0" data-in="1.0" data-anim="up"><div class="av" style="background:#a78bfa">م</div><div><div class="tmeta"><b style="color:#c9b8ff">معاون</b></div><div class="ttext" data-type="1" data-in="1.3" data-cps="26">وضعیت پمپ‌های ایستگاه X به کجا رسید؟</div></div></div>
+      <div class="tline" style="top:140px" data-in="3.0" data-anim="up"><div class="av" style="background:#22d3ee">ن</div><div><div class="tmeta"><b style="color:#9becfa">مدیر نگهداری و تعمیرات</b></div><div class="ttext" data-type="1" data-in="3.3" data-cps="30" data-hl="خرابی پمپ‌های ایستگاه X" data-hlin="7.6">در سه ماه گذشته خرابی پمپ‌های ایستگاه X افزایش پیدا کرده و پیمانکار هنوز مشکل را حل نکرده است.</div></div></div>
+      <div class="tline" style="top:340px" data-in="6.0" data-anim="up"><div class="av" style="background:#34d399">ق</div><div><div class="tmeta"><b style="color:#a6f0d0">مدیر قراردادها</b></div><div class="ttext" data-type="1" data-in="6.2" data-cps="30">قرارداد همین پیمانکار ماه آینده برای تمدید مطرح می‌شود.</div></div></div>
+    </div>
+  </div>
+  <div class="abs card" style="left:110px;top:225px;width:440px;height:640px;padding:34px" data-in="0.7" data-anim="left">
+    <div style="font-size:24px;color:var(--mut);font-weight:700;margin-bottom:14px"><svg class="ic" style="color:var(--cy)"><use href="#i-mic"/></svg> صدای جلسه</div>
+    <svg id="wave" width="372" height="150"></svg>
+    <div style="font-size:24px;color:var(--mut);font-weight:700;margin:26px 0 12px">گویندگان</div>
+    <div style="font-size:24px;line-height:2"><span style="color:#a78bfa">●</span> گوینده ۱ · معاون<br><span style="color:#22d3ee">●</span> گوینده ۲ · نگهداری و تعمیرات<br><span style="color:#34d399">●</span> گوینده ۳ · قراردادها</div>
+    <div class="ltr" style="margin-top:22px;font-size:20px;color:#7f93b5;line-height:1.6;text-align:left">Persian Whisper · faster-whisper<br>pyannote diarization · on-prem GPU</div>
+  </div>
+  <div class="abs" style="top:905px;left:0;right:0;display:flex;justify-content:center;gap:22px">
+    <span class="chip" data-in="8.2" data-anim="pop" style="background:rgba(245,176,65,.12);border-color:rgba(245,176,65,.6);color:#ffe6bd"><svg class="ic"><use href="#i-spark"/></svg> موضوع شناسایی شد: خرابی پمپ‌های ایستگاه X</span>
+    <span class="chip" data-in="9.0" data-anim="pop">ایستگاه X · پیمانکار · قرارداد</span>
+  </div>
+</div>
+
+<!-- S5 SEARCH -->
+<div class="scene" id="s5" data-s="40" data-e="54">
+  <div class="h" data-in="0.2" data-anim="up"><div class="k">۳ · جست‌وجو و تحلیل هم‌زمان</div><div class="t">دستیار سراغ سامانه‌ها می‌رود</div></div>
+  <svg class="abs" style="left:0;top:0" width="1920" height="1080" id="s5svg">
+    <path id="p1" d="M1040 520 C1200 470 1250 380 1330 360" stroke="#22d3ee" stroke-opacity=".55" stroke-width="3" fill="none" pathLength="1" data-draw="1" data-in="2.3" data-dur="0.7"/>
+    <path id="p2" d="M880 520 C720 470 670 380 590 360" stroke="#22d3ee" stroke-opacity=".55" stroke-width="3" fill="none" pathLength="1" data-draw="1" data-in="2.5" data-dur="0.7"/>
+    <path id="p3" d="M1040 620 C1200 680 1250 760 1330 790" stroke="#22d3ee" stroke-opacity=".55" stroke-width="3" fill="none" pathLength="1" data-draw="1" data-in="2.7" data-dur="0.7"/>
+    <path id="p4" d="M880 620 C720 680 670 760 590 790" stroke="#22d3ee" stroke-opacity=".55" stroke-width="3" fill="none" pathLength="1" data-draw="1" data-in="2.9" data-dur="0.7"/>
+    <g id="packets"></g>
+  </svg>
+  <div class="orb" id="orb5" style="left:860px;top:470px;width:200px;height:200px" data-in="0.6" data-anim="scale"><div class="ring2"></div><div class="ring"></div><div class="core"></div></div>
+  <div class="abs ltr" style="left:760px;width:400px;top:690px;text-align:center;font-size:24px;color:var(--cy);font-weight:700" data-in="1.0" data-anim="fade">Hermes Agent + LLM</div>
+  <div class="node card" style="left:1330px;top:312px" data-in="1.2" data-anim="pop"><svg class="ic"><use href="#i-wrench"/></svg>نگهداری و تعمیرات</div>
+  <div class="node card" style="left:230px;top:312px" data-in="1.4" data-anim="pop"><svg class="ic"><use href="#i-mail"/></svg>دبیرخانه</div>
+  <div class="node card" style="left:1330px;top:742px" data-in="1.6" data-anim="pop"><svg class="ic"><use href="#i-doc"/></svg>قراردادها</div>
+  <div class="node card" style="left:230px;top:742px" data-in="1.8" data-anim="pop"><svg class="ic"><use href="#i-clock"/></svg>جلسات قبلی</div>
+  <div class="res" style="left:1300px;top:425px" data-in="5.2" data-anim="up">۷ خرابی در سه ماه اخیر<br>۳ درخواست تعمیر باز <span class="src">CMMS</span></div>
+  <div class="res" style="left:200px;top:425px" data-in="6.0" data-anim="up">نامه پیگیری پیمانکار<br>همراه با پیوست <span class="src">دبیرخانه</span></div>
+  <div class="res" style="left:1300px;top:855px" data-in="6.8" data-anim="up">بند تعهد زمانی تعمیر<br>در قرارداد پیمانکار <span class="src">قراردادها</span></div>
+  <div class="res" style="left:200px;top:855px" data-in="7.6" data-anim="up">مصوبه قبلی درباره<br>عملکرد همین پیمانکار <span class="src">سوابق جلسات</span></div>
+  <div class="abs" style="left:0;right:0;top:225px;text-align:center;font-size:24px;color:var(--mut);font-weight:600" data-in="9.0" data-anim="fade">داده زنده مستقیم از API سامانه · اسناد و نامه‌ها از بانک دانش · همه فقط‌خواندنی</div>
+</div>
+
+<!-- S6 MONITOR -->
+<div class="scene" id="s6" data-s="54" data-e="67">
+  <div class="h" data-in="0.2" data-anim="up" style="top:50px"><div class="k">۴ · پیشنهاد روی نمایشگر</div><div class="t">پیشنهاد کوتاه، مستند به منبع</div></div>
+  <div class="tv" data-in="0.5" data-anim="scale">
+    <div class="ui">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div style="font-size:31px;font-weight:800"><span style="color:var(--cy)">●</span> دستیار زنده جلسه</div>
+        <div id="status6" style="font-size:24px;font-weight:700;padding:6px 18px;border-radius:999px;background:rgba(245,176,65,.15);color:var(--am)">در حال تحلیل…</div>
+      </div>
+      <div style="font-size:27px;margin-bottom:10px" data-in="1.2" data-anim="fade"><span style="color:var(--mut)">موضوع شناسایی‌شده:</span> <b>افزایش خرابی پمپ‌های ایستگاه X</b></div>
+      <div class="uirow" data-in="1.8" data-anim="right"><span>۷ مورد خرابی ثبت‌شده در سه ماه اخیر</span><span class="src">CMMS</span></div>
+      <div class="uirow" data-in="2.3" data-anim="right"><span>۳ درخواست تعمیر باز</span><span class="src">CMMS</span></div>
+      <div class="uirow" data-in="2.8" data-anim="right"><span>یک نامه پیگیری از پیمانکار</span><span class="src">دبیرخانه</span></div>
+      <div class="uirow" data-in="3.3" data-anim="right"><span>تعهد زمانی تعمیر در قرارداد</span><span class="src">قراردادها</span></div>
+      <div class="sug" data-in="4.0" data-anim="up"><div style="font-size:23px;color:var(--cy);font-weight:800;margin-bottom:4px"><svg class="ic"><use href="#i-spark"/></svg> پیشنهاد دستیار</div><div data-type="1" data-in="4.4" data-cps="42">با توجه به تکرار خرابی‌ها و باز ماندن درخواست‌های تعمیر، پیشنهاد می‌شود قبل از تصمیم درباره تمدید قرارداد، گزارش عملکرد پیمانکار و سوابق تعمیرات بررسی شود.</div></div>
+      <div style="margin-top:12px;font-size:23px;color:var(--cy);font-weight:700" data-in="8.2" data-anim="fade"><svg class="ic"><use href="#i-link"/></svg> ۴ منبع مرتبط ‹ نمایش</div>
+    </div>
+  </div>
+  <div class="abs" style="top:925px;left:0;right:0;display:flex;justify-content:center;gap:18px">
+    <span class="mode on" data-in="9.0" data-anim="up"><svg class="ic"><use href="#i-spark"/></svg> پیشنهاد فعالانه</span>
+    <span class="mode" data-in="9.3" data-anim="up"><svg class="ic"><use href="#i-mic"/></svg> درخواست صوتی</span>
+    <span class="mode" data-in="9.6" data-anim="up"><svg class="ic"><use href="#i-tv"/></svg> درخواست متنی</span>
+  </div>
+  <div class="abs" style="top:1005px;left:0;right:0;text-align:center;font-size:24px;color:#ffe6bd;font-weight:700" data-in="10.2" data-anim="fade">پیشنهاد دستیار ≠ تصمیم رسمی — تصمیم با معاونت است</div>
+</div>
+
+<!-- S7 FOLLOW-UP -->
+<div class="scene" id="s7" data-s="67" data-e="78">
+  <div class="h" data-in="0.2" data-anim="up"><div class="k">۵ · بعد از جلسه</div><div class="t">مصوبه ← مسئول ← پیگیری</div></div>
+  <div class="colh" style="left:1120px;width:600px" data-in="0.6" data-anim="fade">مصوبه استخراج‌شده</div>
+  <div class="colh" style="left:700px;width:340px" data-in="0.6" data-anim="fade">مدیریت مسئول</div>
+  <div class="colh" style="left:200px;width:420px" data-in="0.6" data-anim="fade">پیگیری دستیار</div>
+
+  <div class="cell card" style="left:1120px;top:320px;width:600px" data-in="1.0" data-anim="right"><svg class="ic" style="font-size:40px;color:var(--am)"><use href="#i-doc"/></svg><div>بررسی گزارش عملکرد پیمانکار<small>پیش از تصمیم تمدید</small></div></div>
+  <div class="arrow" style="left:1050px;top:378px;width:60px" data-in="1.6" data-anim="grow"></div>
+  <div class="cell card" style="left:700px;top:320px;width:340px" data-in="1.9" data-anim="right"><svg class="ic" style="font-size:40px;color:var(--cy)"><use href="#i-doc"/></svg>امور قراردادها</div>
+  <div class="arrow" style="left:630px;top:378px;width:60px" data-in="2.4" data-anim="grow"></div>
+  <div class="cell card" style="left:200px;top:320px;width:420px" data-in="2.7" data-anim="right"><span class="st" style="background:rgba(34,211,238,.12);color:var(--cy)"><svg class="ic"><use href="#i-eye"/></svg> پایش و گزارش وضعیت</span></div>
+
+  <div class="cell card" style="left:1120px;top:500px;width:600px" data-in="3.2" data-anim="right"><svg class="ic" style="font-size:40px;color:var(--am)"><use href="#i-doc"/></svg><div>رفع ۳ درخواست تعمیر باز<small>ایستگاه X</small></div></div>
+  <div class="arrow" style="left:1050px;top:558px;width:60px" data-in="3.8" data-anim="grow"></div>
+  <div class="cell card" style="left:700px;top:500px;width:340px" data-in="4.1" data-anim="right"><svg class="ic" style="font-size:40px;color:var(--cy)"><use href="#i-wrench"/></svg>نگهداری و تعمیرات</div>
+  <div class="arrow" style="left:630px;top:558px;width:60px" data-in="4.6" data-anim="grow"></div>
+  <div class="cell card" style="left:200px;top:500px;width:420px" data-in="4.9" data-anim="right"><span class="st" style="background:rgba(245,176,65,.12);color:var(--am)"><svg class="ic"><use href="#i-clock"/></svg> یادآوری هفتگی</span></div>
+
+  <div class="cell card" style="left:1120px;top:680px;width:600px" data-in="5.4" data-anim="right"><svg class="ic" style="font-size:40px;color:var(--am)"><use href="#i-doc"/></svg><div>جلسه بعدی بررسی تمدید<small>با حضور پیمانکار</small></div></div>
+  <div class="arrow" style="left:1050px;top:738px;width:60px" data-in="6.0" data-anim="grow"></div>
+  <div class="cell card" style="left:700px;top:680px;width:340px" data-in="6.3" data-anim="right"><svg class="ic" style="font-size:40px;color:var(--cy)"><use href="#i-cal"/></svg>تقویم معاونت</div>
+  <div class="arrow" style="left:630px;top:738px;width:60px" data-in="6.8" data-anim="grow"></div>
+  <div class="cell card" style="left:200px;top:680px;width:420px" data-in="7.1" data-anim="right"><span class="st" style="background:rgba(52,211,153,.12);color:var(--gr)"><svg class="ic"><use href="#i-cal"/></svg> پیشنهاد زمان: شنبه ۱۰:۰۰</span></div>
+
+  <div class="abs" style="top:890px;left:0;right:0;display:flex;justify-content:center;gap:22px">
+    <span class="chip" data-in="8.0" data-anim="pop"><svg class="ic"><use href="#i-eye"/></svg> فاز ۱: پایش، یادآوری و گزارش</span>
+    <span class="chip" data-in="8.5" data-anim="pop" style="background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.5);color:#e2d9ff">فاز بعد: ثبت و ارجاع وظیفه، با تأیید</span>
+  </div>
+</div>
+
+<!-- S8 DAILY -->
+<div class="scene" id="s8" data-s="78" data-e="89">
+  <div class="h" data-in="0.2" data-anim="up"><div class="k">۶ · هر روز</div><div class="t">حتی وقتی جلسه‌ای نیست</div></div>
+  <div class="half" style="right:110px;background:linear-gradient(160deg,#141a45,#0a0f2a)" data-in="0.6" data-anim="right">
+    <canvas id="stars" width="840" height="720" class="abs" style="left:0;top:0"></canvas>
+    <div class="abs" style="right:44px;top:40px;display:flex;align-items:center;gap:18px;font-size:40px;font-weight:800"><svg class="ic" style="font-size:60px;color:#c9d2ff"><use href="#i-moon"/></svg>شب‌ها: دبیرخانه</div>
+    <div class="letter" style="left:70px;top:150px" data-in="1.4" data-anim="left"><div style="font-weight:800;font-size:18px">نامه ۱۴۰۵/۴۱۲</div><i style="width:90%"></i><i style="width:70%"></i><i style="width:80%"></i></div>
+    <div class="letter" style="left:110px;top:200px" data-in="1.8" data-anim="left"><div style="font-weight:800;font-size:18px">بخشنامه</div><i style="width:85%"></i><i style="width:60%"></i><i style="width:75%"></i></div>
+    <div class="letter" style="left:150px;top:250px" data-in="2.2" data-anim="left"><div style="font-weight:800;font-size:18px">پیوست‌های نامه</div><i style="width:80%"></i><i style="width:90%"></i><i style="width:50%"></i></div>
+    <div class="abs" id="scan" style="left:150px;top:250px;width:230px;height:6px;background:var(--cy);box-shadow:0 0 18px var(--cy);border-radius:3px;opacity:0"></div>
+    <div class="abs" style="right:44px;top:160px;width:420px">
+      <div class="bul" data-in="2.8" data-anim="up"><svg class="ic"><use href="#i-check"/></svg>خواندن نامه‌ها و همه پیوست‌ها</div>
+      <div class="bul" data-in="3.3" data-anim="up"><svg class="ic"><use href="#i-check"/></svg>تحلیل ارجاعات و گردش نامه</div>
+      <div class="bul" data-in="3.8" data-anim="up"><svg class="ic"><use href="#i-check"/></svg>یادگیری از بخشنامه‌ها</div>
+    </div>
+    <div class="abs" style="right:44px;left:44px;top:450px;display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-start">
+      <span class="c" data-in="4.00" data-anim="pop" style="font-size:24px;font-weight:700;padding:8px 18px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid rgba(201,210,255,.35);color:#dfe4ff">Word</span><span class="c" data-in="4.15" data-anim="pop" style="font-size:24px;font-weight:700;padding:8px 18px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid rgba(201,210,255,.35);color:#dfe4ff">Excel</span><span class="c" data-in="4.30" data-anim="pop" style="font-size:24px;font-weight:700;padding:8px 18px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid rgba(201,210,255,.35);color:#dfe4ff">PDF فارسی</span><span class="c" data-in="4.45" data-anim="pop" style="font-size:24px;font-weight:700;padding:8px 18px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid rgba(201,210,255,.35);color:#dfe4ff">PDF انگلیسی</span><span class="c" data-in="4.60" data-anim="pop" style="font-size:24px;font-weight:700;padding:8px 18px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid rgba(201,210,255,.35);color:#dfe4ff">اسکن فارسی</span><span class="c" data-in="4.75" data-anim="pop" style="font-size:24px;font-weight:700;padding:8px 18px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid rgba(201,210,255,.35);color:#dfe4ff">RAR</span><span class="c" data-in="4.90" data-anim="pop" style="font-size:24px;font-weight:700;padding:8px 18px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid rgba(201,210,255,.35);color:#dfe4ff">AutoCAD</span>
+    </div>
+    <div class="abs" style="left:44px;right:44px;bottom:44px;font-size:24px;color:#aab6ea;font-weight:600" data-in="4.3" data-anim="fade">پردازش شبانه؛ اسکن‌های فارسی با OCR خوانده می‌شوند</div>
+  </div>
+  <div class="half" style="left:110px;background:linear-gradient(160deg,#3a2a12,#1a1408)" data-in="4.8" data-anim="left">
+    <div class="abs" style="right:44px;top:40px;display:flex;align-items:center;gap:18px;font-size:40px;font-weight:800"><svg class="ic" style="font-size:60px;color:#ffd38a"><use href="#i-sun"/></svg>ساعت ۹ صبح: خلاصه خبری</div>
+    <svg class="abs" style="left:56px;top:150px" width="250" height="250" id="clock">
+      <circle cx="125" cy="125" r="112" fill="rgba(255,211,138,.06)" stroke="#ffd38a" stroke-width="4"/>
+      <g id="ticks"></g>
+      <line id="hh" x1="125" y1="125" x2="125" y2="62" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+      <line id="mh" x1="125" y1="125" x2="125" y2="35" stroke="#ffd38a" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="125" cy="125" r="8" fill="#ffd38a"/>
+    </svg>
+    <div class="abs card" style="right:44px;top:150px;width:440px;padding:26px 28px;background:rgba(255,255,255,.06);border-color:rgba(255,211,138,.35)" data-in="6.6" data-anim="up">
+      <div style="font-size:26px;font-weight:800;color:#ffd38a;margin-bottom:12px"><svg class="ic"><use href="#i-news"/></svg> خلاصه امروز</div>
+      <div class="bul" style="font-size:25px" data-in="7.0" data-anim="up"><svg class="ic" style="color:#ffd38a"><use href="#i-check"/></svg>اخبار موضوعات مدنظر معاونت</div>
+      <div class="bul" style="font-size:25px" data-in="7.4" data-anim="up"><svg class="ic" style="color:#ffd38a"><use href="#i-check"/></svg>تحلیل اثر بر سازمان</div>
+      <div class="bul" style="font-size:25px" data-in="7.8" data-anim="up"><svg class="ic" style="color:#ffd38a"><use href="#i-check"/></svg>با لینک منبع هر خبر</div>
+    </div>
+    <div class="abs" style="left:44px;right:44px;bottom:44px;font-size:24px;color:#e6cf9f;font-weight:600" data-in="8.3" data-anim="fade">اینترنت فقط برای اخبار، از مسیر پراکسی کنترل‌شده</div>
+  </div>
+</div>
+
+<!-- S9 PRINCIPLES -->
+<div class="scene" id="s9" data-s="89" data-e="99">
+  <div class="h" data-in="0.2" data-anim="up"><div class="k">اصول</div><div class="t">امن، مستند، داخل سازمان</div></div>
+  <div class="pr card" style="right:110px" data-in="0.8" data-anim="up"><svg class="ic"><use href="#i-eye"/></svg><h3>فاز ۱: فقط خواندنی</h3><p>دسترسی فقط خواندن به سامانه‌ها؛ تحلیل و پیشنهاد، بدون هیچ اقدامی</p></div>
+  <div class="pr card" style="right:530px" data-in="1.4" data-anim="up"><svg class="ic" style="color:var(--gr)"><use href="#i-lock"/></svg><h3>دانش داخل سازمان</h3><p>صدا، نامه‌ها و دانش فقط در سازمان ذخیره می‌شوند؛ فقط موتور استدلال می‌تواند وب‌سرویس باشد</p></div>
+  <div class="pr card" style="right:950px" data-in="2.0" data-anim="up"><svg class="ic" style="color:var(--am)"><use href="#i-link"/></svg><h3>هر پاسخ با منبع</h3><p>هر پیشنهاد به رکورد سامانه یا سند اصلی ارجاع می‌دهد تا قابل راستی‌آزمایی باشد</p></div>
+  <div class="pr card" style="right:1370px;width:440px" data-in="2.6" data-anim="up"><svg class="ic" style="color:var(--vi)"><use href="#i-learn"/></svg><h3>یادگیری و گسترش</h3><p>به سامانه و API تازه وصل می‌شود و داده‌اش را یاد می‌گیرد؛ در ۵ فاز ابزار و منابع بیشتری می‌گیرد</p></div>
+  <div class="abs" style="top:810px;left:0;right:0;text-align:center;font-size:28px;font-weight:700;color:#cfe3ff" data-in="3.4" data-anim="fade">رشد در ۵ فاز: هر فاز منابع، ابزار و قابلیت تازه</div>
+  <div class="abs" style="top:875px;left:360px;width:1200px;display:flex;gap:14px"><div data-in="3.8" data-anim="up" style="flex:1;height:76px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;background:var(--cy);color:#06101f">فاز ۱</div><div data-in="4.1" data-anim="up" style="flex:1;height:76px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:#9fb3d6">فاز ۲</div><div data-in="4.4" data-anim="up" style="flex:1;height:76px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:#9fb3d6">فاز ۳</div><div data-in="4.7" data-anim="up" style="flex:1;height:76px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:#9fb3d6">فاز ۴</div><div data-in="5.0" data-anim="up" style="flex:1;height:76px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:#9fb3d6">فاز ۵</div></div>
+</div>
+
+<!-- S10 STACK -->
+<div class="scene" id="s10" data-s="99" data-e="110">
+  <div class="h" data-in="0.2" data-anim="up" style="top:50px"><div class="k">زیر کاپوت</div><div class="t">لایه‌های فنی سکو</div></div>
+  <div class="layer card" style="top:820px;border-color:#3a5784" data-in="0.7" data-anim="up"><div class="ln"><svg class="ic" style="color:#9fb3d6"><use href="#i-grid"/></svg>سامانه‌های سازمان</div><div class="cs"><span class="c">دبیرخانه</span><span class="c">CMMS</span><span class="c">قراردادها</span><span class="c">منابع انسانی</span><span class="c">مالی</span><span class="c">پروژه‌ها</span><span class="c">انبار</span><span class="c">تقویم</span></div></div>
+  <div class="layer card" style="top:700px;border-color:rgba(52,211,153,.45)" data-in="1.5" data-anim="up"><div class="ln"><svg class="ic" style="color:var(--gr)"><use href="#i-plug"/></svg>لایه اتصال</div><div class="cs"><span class="c">MCP اختصاصی هر سامانه (فقط‌خواندنی)</span><span class="c ltr">Playwright</span><span class="c">برای سامانه‌های بدون API</span></div></div>
+  <div class="layer card" style="top:580px;border-color:rgba(245,176,65,.45)" data-in="2.3" data-anim="up"><div class="ln"><svg class="ic" style="color:var(--am)"><use href="#i-db"/></svg>حافظه و دانش</div><div class="cs"><span class="c ltr">Honcho</span><span class="c ltr">PostgreSQL + pgvector</span><span class="c">گراف دانش</span><span class="c">RAG + OCR فارسی</span><span class="c">تاریخچه تصمیم‌ها</span></div></div>
+  <div class="layer card" style="top:460px;border-color:rgba(34,211,238,.55)" data-in="3.1" data-anim="up"><div class="ln"><svg class="ic" style="color:var(--cy)"><use href="#i-spark"/></svg>مغز دستیار</div><div class="cs"><span class="c ltr">Hermes Agent</span><span class="c">موتور استدلال: داخلی (Qwen روی <span class="ltr">vLLM</span>) یا وب‌سرویس</span><span class="c">ساخت مهارت و زمان‌بندی</span></div></div>
+  <div class="layer card" style="top:340px;border-color:rgba(167,139,250,.55)" data-in="3.9" data-anim="up"><div class="ln"><svg class="ic" style="color:var(--vi)"><use href="#i-mic"/></svg>ورودی و خروجی</div><div class="cs"><span class="c">آرایه میکروفون</span><span class="c">گفتار به متن فارسی <span class="ltr">(Whisper + pyannote)</span></span><span class="c">وب‌اپ تمام‌صفحه نمایشگر</span></div></div>
+  <div class="abs card" style="left:120px;top:340px;width:200px;height:584px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;border-color:rgba(248,113,113,.4)" data-in="4.8" data-anim="left">
+    <svg class="ic" style="font-size:64px;color:var(--rd)"><use href="#i-shield"/></svg>
+    <div style="font-size:30px;font-weight:800">امنیت</div>
+    <div class="ltr" style="font-size:24px;line-height:2;color:#ffd0d0;font-weight:600">Vault<br>SSO<br>Audit Log</div>
+  </div>
+  <div class="abs" style="top:960px;left:0;right:0;text-align:center;font-size:25px;color:var(--mut);font-weight:600" data-in="5.6" data-anim="fade">همه داده و دانش روی سرورهای سازمان · سخت‌افزار نهایی پس از تست روی صدای واقعی جلسات</div>
+</div>
+
+<!-- S11 OUTRO -->
+<div class="scene" id="s11" data-s="110" data-e="118">
+  <div class="orb" id="orb11" style="left:860px;top:230px;width:200px;height:200px" data-in="0.2" data-anim="scale"><div class="ring2"></div><div class="ring"></div><div class="core"></div></div>
+  <div class="abs" style="top:480px;left:0;right:0;text-align:center;font-size:88px;font-weight:900" data-in="0.6" data-anim="up">دستیار هوشمند سازمانی</div>
+  <div class="abs" style="top:620px;left:0;right:0;text-align:center;font-size:38px;font-weight:600;color:#cfe3ff" data-in="1.2" data-anim="up">از گوش دادن به جلسه تا پیشنهاد مستند · داده و دانش داخل سازمان</div>
+  <div class="abs ltr" style="top:760px;left:0;right:0;text-align:center;font-size:30px;color:var(--cy);font-weight:600" data-in="2.0" data-anim="fade">kodelincer.github.io/enterprise-ai-copilot</div>
+</div>
+
+<div id="brand"><div class="dot"></div>دستیار هوشمند سازمانی</div>
+<div id="prog"></div>
+</div>
+
+<script>
+const DURATION = 118;
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const easeOut=x=>1-Math.pow(1-x,3);
+const easeInOut=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const back=x=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+const fa=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+// deterministic pseudo-noise
+const hash=n=>{const s=Math.sin(n*127.1)*43758.5453;return s-Math.floor(s)};
+const noise=x=>{const i=Math.floor(x),f=x-i,u=f*f*(3-2*f);return hash(i)*(1-u)+hash(i+1)*u};
+
+const scenes=[...document.querySelectorAll('.scene')].map(el=>({el,s:+el.dataset.s,e:+el.dataset.e,
+  items:[...el.querySelectorAll('[data-in]')].map(n=>{
+    const o={n,in:+n.dataset.in,dur:+(n.dataset.dur||0.7),anim:n.dataset.anim||'fade',out:n.dataset.out?+n.dataset.out:null,
+      draw:!!n.dataset.draw,type:!!n.dataset.type,float:n.dataset.float?+n.dataset.float:0,cps:+(n.dataset.cps||25)};
+    if(o.type){o.text=n.textContent;o.hl=n.dataset.hl;o.hlin=n.dataset.hlin?+n.dataset.hlin:null;n.textContent='';n.style.minHeight='1.7em'}
+    if(o.draw){n.style.strokeDasharray='1';n.style.strokeDashoffset='1'}
+    return o;})}));
+
+// --- static builds ---
+// S2 lines from center to cards
+(function(){const svg=document.getElementById('s2lines');const pts=[[1280,302],[640,302],[1440,532],[480,532],[1280,762],[640,762],[960,735],[960,344]];
+ let h='';pts.forEach(([x,y],i)=>{h+=`<line x1="960" y1="550" x2="${x}" y2="${y}" stroke="#f87171" stroke-opacity=".35" stroke-width="2" stroke-dasharray="6 14" class="brk" data-i="${i}"/>`});svg.innerHTML=h})();
+// S3 people
+(function(){const g=document.getElementById('people');const xs=[540,670,800,1120,1250,1380];const cols=['#a78bfa','#22d3ee','#34d399','#f5b041','#60a5fa','#f472b6'];let h='';
+ xs.forEach((x,i)=>{h+=`<g opacity=".95"><circle cx="${x}" cy="${615}" r="34" fill="${cols[i]}" opacity=".85"/><path d="M${x-62} 715 Q${x-60} 655 ${x} 655 Q${x+60} 655 ${x+62} 715 Z" fill="${cols[i]}" opacity=".45"/></g>`});
+ h+=`<g><circle cx="960" cy="600" r="38" fill="#e8eef8" opacity=".9"/><path d="M890 715 Q892 645 960 645 Q1028 645 1030 715 Z" fill="#e8eef8" opacity=".5"/></g>`;g.innerHTML=h})();
+// clock ticks
+(function(){const g=document.getElementById('ticks');let h='';for(let i=0;i<12;i++){const a=i*Math.PI/6;h+=`<line x1="${125+Math.sin(a)*92}" y1="${125-Math.cos(a)*92}" x2="${125+Math.sin(a)*104}" y2="${125-Math.cos(a)*104}" stroke="#ffd38a" stroke-width="${i%3?2:5}"/>`}g.innerHTML=h})();
+// stars
+(function(){const c=document.getElementById('stars').getContext('2d');for(let i=0;i<90;i++){c.fillStyle=`rgba(255,255,255,${.2+hash(i+5)*.6})`;c.beginPath();c.arc(hash(i)*840,hash(i+99)*720,hash(i+7)*1.8+.3,0,7);c.fill()}})();
+// wave bars
+const wave=document.getElementById('wave');(function(){let h='';for(let i=0;i<31;i++)h+=`<rect x="${i*12}" y="70" width="7" height="10" rx="3.5" fill="#22d3ee"/>`;wave.innerHTML=h})();
+const waveBars=[...wave.children];
+
+// background particles
+const fx=document.getElementById('fx').getContext('2d');
+function bg(T){fx.clearRect(0,0,1920,1080);for(let i=0;i<70;i++){const sp=8+hash(i+3)*18;const x=(hash(i)*1920+T*sp*(hash(i+11)>.5?1:-1)+1920*4)%1920;const y=(hash(i+50)*1080-T*sp*.4+1080*8)%1080;const a=.15+.35*noise(T*.5+i);fx.fillStyle=`rgba(140,200,255,${a})`;fx.beginPath();fx.arc(x,y,1+hash(i+23)*2,0,7);fx.fill()}}
+
+function spinOrbs(T){document.querySelectorAll('.orb').forEach((o,k)=>{o.querySelector('.ring').style.transform=`rotate(${T*70}deg)`;o.querySelector('.ring2').style.transform=`rotate(${-T*45}deg)`;const s=1+.03*Math.sin(T*2.4);o.querySelector('.core').style.transform=`scale(${s})`})}
+
+const hooks={
+ s2(lt,el){el.querySelectorAll('.brk').forEach((l,i)=>{const p=clamp((lt-2.8-i*.12)/.5);l.style.opacity=p;l.style.strokeDashoffset=-lt*12})},
+ s3(lt){ // mic rings
+   const g=document.getElementById('rings');let h='';if(lt>1.8){for(let k=0;k<4;k++){const ph=((lt-1.8)*0.55+k/4)%1;const op=(1-ph)*.6*clamp((lt-1.8)/.5);h+=`<ellipse cx="960" cy="742" rx="${54+ph*330}" ry="${13+ph*80}" fill="none" stroke="#22d3ee" stroke-width="2.5" opacity="${op}"/>`}}g.innerHTML=h;
+   document.getElementById('recdot').setAttribute('opacity',(Math.sin(lt*5)>0)?1:.25);
+   const ln=document.querySelector('#link3 line');ln.style.strokeDasharray=lt>7.4?'10 10':'1';if(lt>7.4){ln.style.strokeDashoffset=-lt*40}
+ },
+ s4(lt){const speaking=(lt>1.3&&lt<2.9)||(lt>3.3&&lt<6.6)||(lt>6.2&&lt<8.3);waveBars.forEach((b,i)=>{const amp=speaking?(.25+.75*noise(lt*9+i*.7))*(.6+.4*Math.sin(i*.35)):.05+.04*noise(lt*3+i);const hgt=8+amp*130;b.setAttribute('y',75-hgt/2);b.setAttribute('height',hgt);b.setAttribute('fill',lt>6.2?'#34d399':lt>3.3?'#22d3ee':'#a78bfa')})},
+ s5(lt){const g=document.getElementById('packets');let h='';
+   ['p1','p2','p3','p4'].forEach((id,i)=>{const p=document.getElementById(id);const L=p.getTotalLength();
+     const t0=3.4+i*.25, tRes=5.2+i*.8; // outbound until results
+     for(let k=0;k<3;k++){const st=t0+k*.35; if(lt<st)continue;
+       // outbound loop
+       let ph=((lt-st)/1.1)%1; const back=lt>tRes-1.1+k*.0; const pt=p.getPointAtLength((back?(1-ph):ph)*L);
+       if(lt>tRes+1.5)continue;
+       h+=`<circle cx="${pt.x}" cy="${pt.y}" r="7" fill="${back?'#f5b041':'#22d3ee'}" opacity=".95"/><circle cx="${pt.x}" cy="${pt.y}" r="16" fill="${back?'#f5b041':'#22d3ee'}" opacity=".18"/>`}
+   });g.innerHTML=h},
+ s6(lt){const s=document.getElementById('status6');if(lt<8){s.textContent='در حال تحلیل…';s.style.background='rgba(245,176,65,.15)';s.style.color='#f5b041';s.style.opacity=.6+.4*Math.abs(Math.sin(lt*3))}else{s.textContent='آماده';s.style.background='rgba(52,211,153,.15)';s.style.color='#34d399';s.style.opacity=1}},
+ s8(lt){const sc=document.getElementById('scan');if(lt>2.4&&lt<4.6){sc.style.opacity=1;sc.style.top=(250+((lt-2.4)*1.6%1)*150)+'px'}else sc.style.opacity=0;
+   // clock: from 6:30 to 9:00 between 5.4 and 6.6
+   const p=easeInOut(clamp((lt-5.3)/1.4));const mins=6.5*60+p*150;const mA=(mins%60)/60*360,hA=(mins/60%12)/12*360;
+   document.getElementById('mh').setAttribute('transform',`rotate(${mA} 125 125)`);document.getElementById('hh').setAttribute('transform',`rotate(${hA} 125 125)`)}
+};
+
+function render(T){
+  bg(T);spinOrbs(T);
+  for(const sc of scenes){
+    if(T<sc.s||T>=sc.e){sc.el.style.display='none';continue}
+    sc.el.style.display='block';
+    const lt=T-sc.s,len=sc.e-sc.s;
+    const fin=sc.s===0?1:easeOut(clamp(lt/0.5)),fout=easeOut(clamp((sc.e-T)/0.5));
+    sc.el.style.opacity=Math.min(fin,fout);
+    sc.el.style.transform=`scale(${1+0.025*lt/len})`;
+    for(const o of sc.items){
+      const n=o.n;
+      if(o.draw){const p=easeOut(clamp((lt-o.in)/o.dur));n.style.strokeDashoffset=1-p;continue}
+      if(o.type&&!o.anim){}
+      let p=clamp((lt-o.in)/o.dur);let v=easeOut(p);
+      if(o.out!=null)v*=1-easeOut(clamp((lt-o.out)/.5));
+      if(o.type){const k=Math.max(0,Math.floor((lt-o.in)*o.cps));const txt=o.text.slice(0,k);
+        if(o.hl&&lt>=o.hlin&&k>=o.text.length){const i=o.text.indexOf(o.hl);const h=easeOut(clamp((lt-o.hlin)/.6));n.innerHTML=o.text.slice(0,i)+`<mark style="--h:${h}">`+o.hl+'</mark>'+o.text.slice(i+o.hl.length)}
+        else n.textContent=txt+(k<o.text.length&&k>0?'▍':'');
+        if(!n.dataset.anim)continue}
+      let tr='';const fl=o.float?`translateY(${Math.sin(lt*1.3+o.float)*6}px)`:'';
+      switch(o.anim){
+        case 'up':tr=`translateY(${(1-v)*40}px)`;break;
+        case 'scale':tr=`scale(${.82+.18*v})`;break;
+        case 'pop':tr=`scale(${p<=0?.6:.6+.4*back(clamp(p))})`;break;
+        case 'left':tr=`translateX(${-(1-v)*70}px)`;break;
+        case 'right':tr=`translateX(${(1-v)*70}px)`;break;
+        case 'grow':tr=`scaleX(${v})`;break;
+      }
+      if(n instanceof SVGElement){n.style.transformBox='fill-box';n.style.transformOrigin='center'}
+      n.style.opacity=o.anim==='grow'?(v>0?1:0):v;n.style.transform=tr+' '+fl;
+    }
+    hooks[sc.el.id]&&hooks[sc.el.id](lt,sc.el);
+  }
+  const b=document.getElementById('brand');b.style.opacity=clamp((T-7.2)/.6)*clamp((110-T)/.5);
+  document.getElementById('prog').style.width=(T/DURATION*1920)+'px';
+}
+window.render=render;window.DURATION=DURATION;
+// preview mode: play in real time when opened in a browser
+if(!location.search.includes('render')){const t0=performance.now();(function loop(){render(((performance.now()-t0)/1000)%DURATION);requestAnimationFrame(loop)})()}
+</script>
+</body>
+</html>
